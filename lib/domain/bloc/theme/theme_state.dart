@@ -4,7 +4,7 @@ class ThemeState with EquatableMixin {
   final ThemeMode themeMode;
   ThemeState(this.themeMode);
 
-  factory ThemeState.initial() => ThemeState(ThemeMode.light);
+  factory ThemeState.initial([ThemeMode mode = ThemeMode.light]) => ThemeState(mode);
 
   @override
   List<Object> get props => [themeMode];

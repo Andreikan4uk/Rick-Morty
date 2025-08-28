@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/bloc/favorite/favorites_bloc_bloc.dart';
-import 'package:rick_and_morty/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/domain/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/domain/bloc/favorite/favorites_bloc_bloc.dart';
 import 'package:rick_and_morty/ui/widgets/character_card.dart';
 
 class CardScreen extends StatefulWidget {
@@ -31,7 +31,6 @@ class _CardScreenState extends State<CardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('CardScreen')),
       body: RefreshIndicator(
         onRefresh: () async => context.read<HomeBloc>().add(HomeEvent.refresh()),
         child: BlocBuilder<HomeBloc, HomeState>(

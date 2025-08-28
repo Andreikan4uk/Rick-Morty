@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/domain/bloc/favorite/favorites_bloc_bloc.dart';
 import 'package:rick_and_morty/ui/widgets/character_card.dart';
 
 class FavoriteScreen extends StatelessWidget {
