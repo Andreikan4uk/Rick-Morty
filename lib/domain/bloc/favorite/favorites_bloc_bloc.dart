@@ -11,6 +11,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     on<_LoadFavorites>(_loadFavorites);
     on<_AddFavorites>(_addFavorites);
     on<_RemoveFavorites>(_removeFavorites);
+    add(_LoadFavorites());
   }
 
   Future _loadFavorites(_LoadFavorites event, Emitter<FavoritesState> emit) async {

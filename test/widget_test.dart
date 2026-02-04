@@ -5,26 +5,69 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:rick_and_morty/main.dart';
+import 'package:rick_and_morty/domain/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/domain/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/domain/models/card_model.dart';
+import 'package:rick_and_morty/ui/screens/card_screen.dart';
+import 'package:rick_and_morty/ui/widgets/character_card.dart';
+import 'mocks/mock_home_bloc.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('CardScreen test', (WidgetTester tester) async {
+    final mockHomeBloc = MockHomeBloc();
+    final favorBloc = FavoritesBloc();
+    // final mockFavoritesBloc = MockFavorBloc();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final loadingState = HomeState(
+      cards: const [],
+      isLoading: true,
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    final loadedState = HomeState(
+      cards: const [
+        CardModel(id: 1, name: 'Rick'),
+        CardModel(id: 2, name: 'Morty'),
+      ],
+      isLoading: false,
+    );
+
+    whenListen(
+      mockHomeBloc,
+      Stream<HomeState>.fromIterable([loadedState]),
+      initialState: loadingState,
+    );
+
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<HomeBloc>.value(value: mockHomeBloc),
+          BlocProvider.value(value: favorBloc),
+        ],
+        child: MaterialApp(
+          home: CardScreen(),
+        ),
+      ),
+    );
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
     await tester.pump();
+    expect(find.byType(CharacterCard), findsNWidgets(2));
+    expect(find.text('Rick'), findsOneWidget);
+    expect(find.text('Morty'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    mockHomeBloc.close();
+    favorBloc.close();
+
+    // 🔹 3. нажимаем на карточку
+    // await tester.tap(find.text('Rick'));
+    // await tester.pumpAndSettle();
+
+    // 🔹 4. проверяем, что открылся экран деталей
+    // expect(find.text('gender'), findsOneWidget);
   });
 }

@@ -7,13 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final isDark = prefs.getBool('isDark') ?? false;
+  // final prefs = await SharedPreferences.getInstance();
+  // final isDark = prefs.getBool('isDark') ?? false;
   runApp(
-    BlocProvider(
-      create: (_) => ThemeBloc(initialMode: isDark ? ThemeMode.dark : ThemeMode.light),
-      child: const MyApp(),
-    ),
+    MyApp(),
+    // BlocProvider(
+    //   create: (_) => ThemeBloc(initialMode: isDark ? ThemeMode.dark : ThemeMode.light),
+    //   child: const MyApp(),
+    // ),
   );
 }
 
@@ -21,15 +22,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        return MaterialApp(
-          home: HomeScreen(),
-          theme: AppTheme.light(),
-          themeMode: state.themeMode,
-          darkTheme: AppTheme.dark(),
-        );
-      },
+    // return BlocBuilder<ThemeBloc, ThemeState>(
+    // builder: (context, state) {
+    return MaterialApp(
+      home: HomeScreen(),
+      theme: AppTheme.light(),
+      // themeMode: state.themeMode,
+      darkTheme: AppTheme.dark(),
     );
+    // },
+    // );
   }
 }

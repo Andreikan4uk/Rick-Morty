@@ -1,9 +1,9 @@
 part of 'home_bloc.dart';
 
 class HomeState with EquatableMixin {
-  final int currentIndex;
   final List<CardModel> cards;
   final bool isLoading;
+  final int currentIndex;
   final bool isRefreshing;
   final bool isLoadingMore;
   final bool hasMore;
@@ -14,27 +14,90 @@ class HomeState with EquatableMixin {
   bool get canLoadMore => hasMore && !isLoadingMore;
 
   HomeState({
-    required this.currentIndex,
     required this.cards,
-    required this.isLoading,
-    required this.isRefreshing,
-    required this.isLoadingMore,
-    required this.hasMore,
-    required this.page,
-    required this.isDarkTheme,
+    this.isLoading = false,
+    this.currentIndex = 0,
+    this.isRefreshing = false,
+    this.isLoadingMore = false,
+    this.hasMore = true,
+    this.page = 0,
+    this.isDarkTheme = false,
     this.error,
   });
 
   factory HomeState.initial() => HomeState(
     currentIndex: 0,
     cards: [],
-    isLoading: false,
+    isLoading: true,
     isRefreshing: false,
     isLoadingMore: false,
     hasMore: true,
     page: 0,
     isDarkTheme: false,
     error: null,
+  );
+
+  factory HomeState.loading({required HomeState previous}) => HomeState(
+    cards: previous.cards,
+    isLoading: true,
+    error: null,
+  );
+
+  factory HomeState.loaded({
+    required List<CardModel> cards,
+    required HomeState previous,
+  }) => HomeState(
+    cards: cards,
+    page: previous.page + 1,
+    isLoading: false,
+    hasMore: cards.isNotEmpty,
+  );
+
+  factory HomeState.error({
+    required HomeState previous,
+    required String message,
+  }) => HomeState(
+    cards: previous.cards,
+    isLoading: false,
+    isRefreshing: false,
+    isLoadingMore: false,
+    error: message,
+  );
+
+  factory HomeState.refreshing({
+    required HomeState previous,
+  }) => HomeState(
+    cards: previous.cards,
+    isRefreshing: true,
+    hasMore: true,
+    page: 0,
+  );
+
+  factory HomeState.refreshed({
+    required List<CardModel> cards,
+  }) => HomeState(
+    cards: cards,
+    isRefreshing: false,
+    hasMore: cards.isNotEmpty,
+    page: 1,
+  );
+
+  factory HomeState.isLoadingMore({
+    required HomeState previous,
+  }) => HomeState(
+    cards: previous.cards,
+    isLoadingMore: true,
+    error: null,
+  );
+
+  factory HomeState.isLoadedMore({
+    required List<CardModel> cards,
+    required HomeState previous,
+  }) => HomeState(
+    cards: cards,
+    isLoadingMore: false,
+    page: previous.page + 1,
+    hasMore: true,
   );
 
   HomeState copyWith({

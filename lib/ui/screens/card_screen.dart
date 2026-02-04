@@ -36,39 +36,47 @@ class _CardScreenState extends State<CardScreen> {
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             final favoritesState = context.watch<FavoritesBloc>().state;
-            return CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: state.cards.length,
-                    (context, int index) => CharacterCard(
-                      isFavorite: favoritesState.favorites.any((fav) => fav.id == state.cards[index].id),
-                      card: state.cards[index],
-                      onPressed: () {
-                        final isFavorite = favoritesState.favorites.any((fav) => fav.id == state.cards[index].id);
-                        debugPrint(state.cards[index].toString());
-                        if (!isFavorite) {
-                          context.read<FavoritesBloc>().add(FavoritesEvent.addFavorites(card: state.cards[index]));
-                        } else {
-                          context.read<FavoritesBloc>().add(FavoritesEvent.removeFavorites(id: state.cards[index].id));
-                        }
-                      },
-                    ),
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7),
-                ),
-                SliverToBoxAdapter(
-                  child:
-                      state.isLoadingMore
-                          ? const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          )
-                          : const SizedBox.shrink(),
-                ),
-              ],
-            );
+            return state.isLoading
+                ? Center(child: CircularProgressIndicator())
+                : CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: state.cards.length,
+                          (context, int index) => CharacterCard(
+                            isFavorite: favoritesState.favorites.any((fav) => fav.id == state.cards[index].id),
+                            card: state.cards[index],
+                            onPressed: () {
+                              final isFavorite = favoritesState.favorites.any((fav) => fav.id == state.cards[index].id);
+                              debugPrint(state.cards[index].toString());
+                              if (!isFavorite) {
+                                context.read<FavoritesBloc>().add(
+                                  FavoritesEvent.addFavorites(card: state.cards[index]),
+                                );
+                              } else {
+                                context.read<FavoritesBloc>().add(
+                                  FavoritesEvent.removeFavorites(id: state.cards[index].id),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.7,
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: state.isLoadingMore
+                            ? const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Center(child: CircularProgressIndicator()),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                    ],
+                  );
           },
         ),
       ),

@@ -10,6 +10,7 @@ class CharacterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(card.imageUrl);
     return Stack(
       children: [
         Card(
@@ -22,15 +23,14 @@ class CharacterCard extends StatelessWidget {
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child:
-                        card.imageUrl != null
-                            ? CachedNetworkImage(
-                              imageUrl: card.imageUrl!,
-                              placeholder: (context, url) => Placeholder(),
-                              errorWidget: (context, url, error) => Placeholder(),
-                              fit: BoxFit.cover,
-                            )
-                            : Placeholder(),
+                    child: card.imageUrl != null
+                        ? CachedNetworkImage(
+                            imageUrl: card.imageUrl!,
+                            placeholder: (context, url) => Placeholder(),
+                            errorWidget: (context, url, error) => Placeholder(),
+                            fit: BoxFit.cover,
+                          )
+                        : Placeholder(),
                   ),
                 ),
                 Text(card.name ?? ''),

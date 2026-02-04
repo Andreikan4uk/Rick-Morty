@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rick_and_morty/domain/db/i_db.dart';
 import 'package:rick_and_morty/domain/models/card_model.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DBProvider {
+class DBProvider implements ILocalDataSource {
   static Database? _database;
   static final DBProvider db = DBProvider();
 
@@ -43,6 +44,7 @@ class DBProvider {
     ''');
   }
 
+  @override
   Future<void> insertCards(List<CardModel> cards) async {
     final db = await DBProvider.db.database;
 
@@ -53,28 +55,33 @@ class DBProvider {
     await batch.commit(noResult: true);
   }
 
+  @override
   Future<List<CardModel>> getCards() async {
     final db = await DBProvider.db.database;
     final res = await db.query('Cards');
     return res.map((e) => CardModel.fromMap(e)).toList();
   }
 
+  @override
   Future<void> addToFavorites(CardModel card) async {
     final db = await database;
     await db.insert('Favorites', card.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  @override
   Future<void> removeFromFavorites(int id) async {
     final db = await database;
     await db.delete('Favorites', where: 'id = ?', whereArgs: [id]);
   }
 
+  @override
   Future<List<CardModel>> getFavorites() async {
     final db = await database;
     final res = await db.query('Favorites');
     return res.map((e) => CardModel.fromMap(e)).toList();
   }
 
+  @override
   Future<bool> isFavorite(int id) async {
     final db = await database;
     final res = await db.query('Favorites', where: 'id = ?', whereArgs: [id]);
