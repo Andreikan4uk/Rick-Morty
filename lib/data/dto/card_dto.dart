@@ -10,6 +10,21 @@ class CardDto {
 
   CardDto({this.imageUrl, this.id, this.name, this.status, this.species, this.gender});
 
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'name': name, 'status': status, 'species': species, 'gender': gender, 'image': imageUrl};
+  }
+
+  factory CardDto.fromMap(Map<String, dynamic> map) {
+    return CardDto(
+      id: map['id'],
+      name: map['name'],
+      status: map['status'],
+      species: map['species'],
+      gender: map['gender'],
+      imageUrl: map['image'],
+    );
+  }
+
   factory CardDto.fromJson(Map<String, dynamic> json) {
     return CardDto(
       imageUrl: json['image'] != null ? json['image'] as String? : null,
@@ -24,6 +39,17 @@ class CardDto {
   static List<CardDto> listFromJson(Map<String, dynamic> json) {
     final results = json['results'] as List<dynamic>? ?? [];
     return results.map((e) => CardDto.fromJson(e)).toList();
+  }
+
+  factory CardDto.fromDomain(CardModel card) {
+    return CardDto(
+      id: card.id,
+      name: card.name,
+      status: card.status,
+      species: card.species,
+      gender: card.gender,
+      imageUrl: card.imageUrl,
+    );
   }
 
   CardModel toDomain() {

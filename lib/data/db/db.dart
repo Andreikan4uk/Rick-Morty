@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rick_and_morty/data/dto/card_dto.dart';
 import 'package:rick_and_morty/domain/models/card_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -48,7 +49,8 @@ class DBProvider {
 
     Batch batch = db.batch();
     for (var card in cards) {
-      batch.insert('Cards', card.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      final dto = CardDto.fromDomain(card);
+      batch.insert('Cards', dto.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     }
     await batch.commit(noResult: true);
   }
@@ -56,12 +58,13 @@ class DBProvider {
   Future<List<CardModel>> getCards() async {
     final db = await DBProvider.db.database;
     final res = await db.query('Cards');
-    return res.map((e) => CardModel.fromMap(e)).toList();
+    return res.map((e) => CardDto.fromMap(e).toDomain()).toList();
   }
 
   Future<void> addToFavorites(CardModel card) async {
     final db = await database;
-    await db.insert('Favorites', card.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    final dto = CardDto.fromDomain(card);
+    await db.insert('Favorites', dto.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> removeFromFavorites(int id) async {
@@ -72,7 +75,7 @@ class DBProvider {
   Future<List<CardModel>> getFavorites() async {
     final db = await database;
     final res = await db.query('Favorites');
-    return res.map((e) => CardModel.fromMap(e)).toList();
+    return res.map((e) => CardDto.fromMap(e).toDomain()).toList();
   }
 
   Future<bool> isFavorite(int id) async {

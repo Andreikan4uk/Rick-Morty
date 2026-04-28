@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rick_and_morty/domain/db/db.dart';
+import 'package:rick_and_morty/data/db/db.dart';
 import 'package:rick_and_morty/domain/models/card_model.dart';
 
 part 'favorites_bloc_event.dart';

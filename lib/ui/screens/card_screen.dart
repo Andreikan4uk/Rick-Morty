@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/domain/bloc/home/home_bloc.dart';
-import 'package:rick_and_morty/domain/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/favorite/favorites_bloc_bloc.dart';
 import 'package:rick_and_morty/ui/widgets/character_card.dart';
 
 class CardScreen extends StatefulWidget {
@@ -13,6 +13,12 @@ class CardScreen extends StatefulWidget {
 
 class _CardScreenState extends State<CardScreen> {
   final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -59,13 +65,12 @@ class _CardScreenState extends State<CardScreen> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.7),
                 ),
                 SliverToBoxAdapter(
-                  child:
-                      state.isLoadingMore
-                          ? const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          )
-                          : const SizedBox.shrink(),
+                  child: state.isLoadingMore
+                      ? const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ],
             );

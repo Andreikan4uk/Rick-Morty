@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "312753907381",
+    "project_id": "education9",
+    "storage_bucket": "education9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312753907381:android:687abadaa724daea7ec0fc",
+        "android_client_info": {
+          "package_name": "com.example.rick_and_morty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLH1soxR86itKUXgwUCUUFaJr3kwL36E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

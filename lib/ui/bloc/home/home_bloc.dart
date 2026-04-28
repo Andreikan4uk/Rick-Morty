@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rick_and_morty/domain/db/db.dart';
+import 'package:rick_and_morty/data/db/db.dart';
 import 'package:rick_and_morty/domain/models/card_model.dart';
 import 'package:rick_and_morty/domain/repository/i_home_repository.dart';
 

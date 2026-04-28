@@ -21,21 +21,6 @@ class CardModel with EquatableMixin {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'status': status, 'species': species, 'gender': gender, 'image': imageUrl};
-  }
-
-  factory CardModel.fromMap(Map<String, dynamic> map) {
-    return CardModel(
-      id: map['id'],
-      name: map['name'],
-      status: map['status'],
-      species: map['species'],
-      gender: map['gender'],
-      imageUrl: map['image'],
-    );
-  }
-
   @override
   List<Object?> get props => [imageUrl, id, name, status, species, gender];
 }

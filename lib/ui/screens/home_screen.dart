@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/domain/bloc/favorite/favorites_bloc_bloc.dart';
-import 'package:rick_and_morty/domain/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/home/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/domain/bloc/theme/theme_bloc.dart';
 import 'package:rick_and_morty/domain/repository/home_repository.dart';
+import 'package:rick_and_morty/ui/bloc/theme/theme_bloc.dart';
 import 'package:rick_and_morty/ui/screens/card_screen.dart';
 import 'package:rick_and_morty/ui/screens/favorite_screen.dart';
 
@@ -39,7 +39,6 @@ class HomeScreen extends StatelessWidget {
             return BottomNavigationBar(
               currentIndex: state.currentIndex,
               onTap: (index) {
-                debugPrint(index.toString());
                 context.read<HomeBloc>().add(HomeEvent.changePage(index: index));
               },
               items: [
