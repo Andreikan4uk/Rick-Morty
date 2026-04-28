@@ -11,7 +11,14 @@ class CardDto {
   CardDto({this.imageUrl, this.id, this.name, this.status, this.species, this.gender});
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'status': status, 'species': species, 'gender': gender, 'image': imageUrl};
+    return {
+      'id': id,
+      'name': name,
+      'status': status,
+      'species': species,
+      'gender': gender,
+      'image': imageUrl,
+    };
   }
 
   factory CardDto.fromMap(Map<String, dynamic> map) {
@@ -56,6 +63,13 @@ class CardDto {
     if (id == null) {
       throw Exception("CardDto.id is null");
     }
-    return CardModel(imageUrl: imageUrl, id: id!, name: name, status: status, species: species, gender: gender);
+    return CardModel(
+      imageUrl: imageUrl,
+      id: id!,
+      name: name,
+      status: status,
+      species: species,
+      gender: gender,
+    );
   }
 }

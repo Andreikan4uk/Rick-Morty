@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/ui/bloc/home/home_bloc.dart';
-import 'package:rick_and_morty/ui/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/home_bloc/home_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/favorite_bloc/favorites_bloc_bloc.dart';
 import 'package:rick_and_morty/ui/widgets/character_card.dart';
 
 class CardScreen extends StatefulWidget {
@@ -22,16 +22,19 @@ class _CardScreenState extends State<CardScreen> {
 
   @override
   void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeBloc>().add(HomeEvent.loadCards());
+    });
     _scrollController.addListener(() {
       double maxScroll = _scrollController.position.maxScrollExtent;
       double currentScroll = _scrollController.position.pixels;
       final state = context.read<HomeBloc>().state;
 
-      if (maxScroll - currentScroll >= 300 && state.canLoadMore && !state.isLoadingMore) {
+      if (maxScroll - currentScroll <= 300 && state.canLoadMore && !state.isLoadingMore) {
         context.read<HomeBloc>().add(HomeEvent.loadMoreCards());
       }
     });
-    super.initState();
   }
 
   @override
@@ -53,7 +56,6 @@ class _CardScreenState extends State<CardScreen> {
                       card: state.cards[index],
                       onPressed: () {
                         final isFavorite = favoritesState.favorites.any((fav) => fav.id == state.cards[index].id);
-                        debugPrint(state.cards[index].toString());
                         if (!isFavorite) {
                           context.read<FavoritesBloc>().add(FavoritesEvent.addFavorites(card: state.cards[index]));
                         } else {

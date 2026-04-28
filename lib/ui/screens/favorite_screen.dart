@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/ui/bloc/favorite/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/favorite_bloc/favorites_bloc_bloc.dart';
 import 'package:rick_and_morty/ui/widgets/character_card.dart';
 
-class FavoriteScreen extends StatelessWidget {
+class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
+
+  @override
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
+}
+
+class _FavoriteScreenState extends State<FavoriteScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FavoritesBloc>().add(FavoritesEvent.loadFavorites());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

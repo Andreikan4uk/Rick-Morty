@@ -9,7 +9,6 @@ class HomeState with EquatableMixin {
   final bool hasMore;
   final int page;
   final String? error;
-  final bool isDarkTheme;
 
   bool get canLoadMore => hasMore && !isLoadingMore;
 
@@ -21,7 +20,6 @@ class HomeState with EquatableMixin {
     required this.isLoadingMore,
     required this.hasMore,
     required this.page,
-    required this.isDarkTheme,
     this.error,
   });
 
@@ -33,7 +31,6 @@ class HomeState with EquatableMixin {
     isLoadingMore: false,
     hasMore: true,
     page: 0,
-    isDarkTheme: false,
     error: null,
   );
 
@@ -56,7 +53,6 @@ class HomeState with EquatableMixin {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       hasMore: hasMore ?? this.hasMore,
       page: page ?? this.page,
-      isDarkTheme: isDarkTheme ?? this.isDarkTheme,
       error: error ?? this.error,
     );
   }
@@ -70,7 +66,6 @@ class HomeState with EquatableMixin {
     isLoadingMore,
     hasMore,
     page,
-    isDarkTheme,
     error,
   ];
 }

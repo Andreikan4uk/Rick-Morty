@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/ui/bloc/favorite/favorites_bloc_bloc.dart';
-import 'package:rick_and_morty/ui/bloc/home/home_bloc.dart';
+import 'package:rick_and_morty/data/local/db/db.dart';
+import 'package:rick_and_morty/ui/bloc/favorite_bloc/favorites_bloc_bloc.dart';
+import 'package:rick_and_morty/ui/bloc/home_bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_and_morty/domain/repository/home_repository.dart';
-import 'package:rick_and_morty/ui/bloc/theme/theme_bloc.dart';
+import 'package:rick_and_morty/data/api/card_api.dart';
+import 'package:rick_and_morty/ui/bloc/theme_bloc/theme_bloc.dart';
 import 'package:rick_and_morty/ui/screens/card_screen.dart';
 import 'package:rick_and_morty/ui/screens/favorite_screen.dart';
 
@@ -14,8 +15,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<HomeBloc>(create: (_) => HomeBloc(HomeRepository())..add(HomeEvent.loadCards())),
-        BlocProvider<FavoritesBloc>(create: (_) => FavoritesBloc()..add(FavoritesEvent.loadFavorites())),
+        BlocProvider<HomeBloc>(create: (_) => HomeBloc(CardApi(), DBProvider.db)),
+        BlocProvider<FavoritesBloc>(create: (_) => FavoritesBloc(DBProvider.db)),
       ],
       child: Scaffold(
         appBar: AppBar(

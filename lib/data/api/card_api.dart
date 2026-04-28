@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rick_and_morty/domain/models/card_model.dart';
 import 'package:rick_and_morty/data/dto/card_dto.dart';
-import 'package:rick_and_morty/domain/repository/i_home_repository.dart';
+import 'package:rick_and_morty/data/api/i_card_api.dart';
 
-class HomeRepository implements IHomeRepository {
+class CardApi implements ICardApi {
   final String _baseUrl = '''https://rickandmortyapi.com/api''';
 
   @override
